@@ -1,67 +1,62 @@
+//Circular Queue using array
 #include <stdio.h>
 #include <stdlib.h>
+#define size 5
 
-struct Node{
-    int data;
-    struct Node *next;
-};
-
-struct Node *front = NULL;
-struct Node *rear = NULL;
+int queue[size];
+int front = -1;
+int rear = -1;
 
 void enqueue(int value){
-    struct Node *temp;
-    temp = (struct Node*)malloc(sizeof(struct Node));
-    temp->data = value;
-    if (front == NULL){
-        front = temp;
+    if (front == -1){
+        front = rear = 0;
+        queue[rear] = value;
     }
-    else{
-        rear->next = temp;    
+    else {
+        if (((rear + 1) % size) != front){
+            rear = (rear + 1) % size;
+            queue[rear] = value;
+        }
+        else{
+            printf("Queue Overflow");
+        }
     }
-    rear = temp;
-    rear->next = front;
 }
 
 void dequeue(){
-    if (front == NULL){
-        printf("Circular Queue Overflow\n");
-        return;
+    if (front == -1){
+        printf("Queue Underflow");
     }
-    else if(front == rear){
-        struct Node *temp = front;
-        printf("Deleted element: %d", temp->data);
-        front = rear = NULL;
-        free(temp);
-    }
-    else{
-        struct Node *temp = front;
-        printf("Deleted element: %d", temp->data);
-        front = front->next;
-        rear->next = front;
-        free(temp);
+    else {
+        int value = queue[front];
+        printf("Deleted Element: %d", value);
+        if (front == rear){
+            front = rear = -1;
+        }
+        else{
+            front = (front + 1) % size;
+        }
     }
 }
 
 void display(){
-    if (front == NULL){
-        printf("Circular Queue is Empty\n");
-        return;
+    int i = front;
+    if (front == -1){
+        printf("Queue is Empty");
     }
     else{
-        struct Node *temp = front;
-        while(temp->next != front){
-            printf("%d ", temp->data);
-            temp = temp->next;
+        while (i != rear){
+            printf("%d ", queue[i]);
+            i = (i+1)%size;
         }
-        printf("%d ",temp->data);
+        printf("%d ",queue[i]);
     }
 }
 
 void main()
 {
     int choice, value;
-    printf("\n:: Circular Queue using Linked List ::\n");
+    printf("\n:: Circular Queue using Array ::\n");
     while(1){
        printf("\n------- MENU -------\n");
        printf("1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
