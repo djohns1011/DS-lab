@@ -38,7 +38,7 @@ int main() {
 //Adding elements to stack1
 void Push1() { 
 	int x;
-	if(Top1==Top2) { 
+	if((Top1+1)==Top2) { 
 		printf("\nStack is Full");
   } 
   else { 
@@ -51,7 +51,7 @@ void Push1() {
 //Adding elements to stack2
 void Push2() {
 	int x; 
-	if(Top2==Top1) {
+	if(Top2==(Top1+1)) {
 		printf("\nStack is Full");
 	} 
 	else { 
@@ -75,7 +75,7 @@ void Pop1() {
 
 //Deleting an element from stack2
 void Pop2() {
-	if(Top2==-1) { 
+	if(Top2==Size) { 
 		printf("\nStack is Empty!!");
 	}
 	else { 
