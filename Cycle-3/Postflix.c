@@ -44,7 +44,7 @@ int PostfixEval(char expression[]){
         if (isdigit(ch)){ 
             //converting char type digit(ch) into integer
             // Difference form ASCII value of 0 gives the ASCII value of ch
-            num=ch-'0';   
+            num = ch-'0';   
             push(num);
         }
 
@@ -83,6 +83,6 @@ int main(){
     printf("Enter the Postfix Expression: ");
     scanf("%s",expression);
     printf("The Result of the expression %s = ",expression);
-    int x=PostfixEval(expression);
+    int x = PostfixEval(expression);
     printf("%d\n",x);
 }
