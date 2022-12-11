@@ -20,8 +20,8 @@ int main() {
 		switch(choice) { 
 			case 1: Push(); 
 			break; 
-            case 2: Pop();
-            break;
+            		case 2: Pop();
+           		break;
 			case 3: Peek();
 			break; 
 			case 4: Display(); 
