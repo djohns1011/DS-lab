@@ -20,15 +20,15 @@ int main() {
 		scanf("%d",&choice); 
 		switch(choice) { 
 			case 1: Push1(); 
-						break; 
-	    	case 2: Push2(); 
-						break; 
+				break; 
+		    	case 2: Push2(); 
+				break; 
 			case 3: Pop1(); 
-	    				break; 
-	    	case 4: Pop2(); 
-	    				break; 
-	    	case 5: Display(); 
-	    				break; 
+				break; 
+	    		case 4: Pop2(); 
+	    			break; 
+	    		case 5: Display(); 
+	    			break; 
 	 		case 6: exit(0); 
 	 		default: printf("\nInvalid choice!!");
 	 	} 
