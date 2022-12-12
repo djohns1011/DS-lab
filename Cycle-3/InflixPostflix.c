@@ -1,154 +1,110 @@
-//Convert a given infix expression to postfix/prefix
-#include<stdio.h>
-#include<stdlib.h>      
-#include<ctype.h>     
-#include<string.h>
+//Convert a given infix expression to postfix
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-#define SIZE 100
+int n, tos = 0;
 
-char stack[SIZE];
-int top = -1;
-
-//add element
-void push(char item)
+void push(char stack[], int item)
 {
-	if(top >= SIZE-1)
-	{
-		printf("\nStack Overflow.");
-	}
-	else
-	{
-		top = top+1;
-		stack[top] = item;
-	}
+    char temp;
+    temp = item;
+    if (tos == n - 1)
+    {
+        printf("Stack Overflow");
+        exit(0);
+    }
+    else
+    {
+        tos++;
+        stack[tos] = temp;
+    }
 }
 
-//delete an element
-char pop()
+char pop(char stack[])
 {
-	char item ;
-	
-	if(top < 0)
-	{
-		printf("stack under flow: invalid infix expression");
-		exit(1);
-	}
-	else
-	{
-		item = stack[top];
-		top = top-1;
-		return(item);
-	}
+    if (tos < 0)
+    {
+        printf("Stack Underflow");
+        exit(0);
+    }
+    else
+    {
+        return stack[tos--];
+    }
 }
 
-//Checking for operator
-int operator(char symbol)
+int getPrec(char c)
 {
-	if(symbol == '^' || symbol == '*' || symbol == '/' || symbol == '+' || symbol =='-')
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
+
+    if (c == '^')
+    {
+        return 3;
+    }
+    else if (c == '*' || c == '/')
+    {
+        return 2;
+    }
+    else if (c == '+' || c == '-')
+    {
+        return 1;
+    }
+    else if (c == '#')
+    {
+        return 0;
+    }
+    else
+    {
+        return 4;
+    }
 }
 
-//Precedence of operators
-int precedence(char symbol)
+void main()
 {
-	if(symbol == '^')
-	{
-		return(3);
-	}
-	else if(symbol == '*' || symbol == '/')
-	{
-		return(2);
-	}
-	else if(symbol == '+' || symbol == '-')          
-	{
-		return(1);
-	}
-	else
-	{
-		return(0);
-	}
-}
-
-//Converting Inflix to Postflix
-void InfixToPostfix(char infix_exp[], char postfix_exp[])
-{ 
-	int i, j;
-	char item;
-	char x;
-
-	push('(');                               
-	strcat(infix_exp,")");                 
-	i=0;
-	j=0;
-	item=infix_exp[i];         
-
-	while(item != '\0')
-	{
-		if(item == '(')
-		{
-			push(item);
-		}
-		else if( isdigit(item) || isalpha(item))
-		{
-			postfix_exp[j] = item;              
-			j++;
-		}
-		else if(operator(item) == 1)      
-		{
-			x=pop();
-			while(operator(x) == 1 && precedence(x)>= precedence(item))
-			{
-				postfix_exp[j] = x;                  
-				j++;
-				x = pop();                       
-			}
-			push(x);
-			push(item);                 
-		}
-		else if(item == ')')         
-		{
-			x = pop();                  
-			while(x != '(')                
-			{
-				postfix_exp[j] = x;
-				j++;
-				x = pop();
-			}
-		}
-		else
-		{ 
-			printf("\nInvalid infix Expression.\n");       
-			exit(1);
-		}
-		i++;
-		item = infix_exp[i]; 
-	} 
-	if(top>0)
-	{
-		printf("\nInvalid infix Expression.\n"); 
-		getchar();
-		exit(1);
-	}
-	postfix_exp[j] = '\0';
-}
-
-//Main Function
-int main()
-{
-	char infix[SIZE], postfix[SIZE];         
-	//The infix expression contains single letter variables and single digit
-	printf("\nEnter Infix expression : ");
-	gets(infix);
-
-	InfixToPostfix(infix,postfix);                  
-	printf("Postfix Expression: ");
-	puts(postfix);                     
-
-	return 0;
+    char exp[100];
+    char postfix[100];
+    char para;
+    n = 100;
+    postfix[0] = '#';
+    printf("Enter the expression: ");
+    gets(exp);
+    // printf("%d",strlen(exp));
+    for (int i = 0; i < strlen(exp); i++)
+    {
+        // printf("\nCurrent top %c\n",postfix[tos]);
+        if (exp[i] == ')')
+        {
+            while (postfix[tos] != '(')
+            {
+                para = pop(postfix);
+                if (para != '(')
+                {
+                    printf("%c", para);
+                }
+            }
+            continue;
+        }
+        // if(exp[i] == )
+        if (getPrec(exp[i]) > getPrec(postfix[tos]) || exp[i] == '(')
+        {
+            push(postfix, exp[i]);
+        }
+        else
+        {
+            // printf("\n on:  %c ", exp[i]);
+            while (getPrec(exp[i]) <= getPrec(postfix[tos]) && postfix[tos] != '(')
+            {
+                printf("%c", pop(postfix));
+            }
+            push(postfix, exp[i]);
+        }
+    }
+    while (postfix[tos] != '#')
+    {
+        para = pop(postfix);
+        if (para != '(')
+        {
+            printf("%c", para);
+        }
+    }
 }
