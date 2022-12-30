@@ -5,9 +5,9 @@ struct Node
 {
     int data;
     struct Node *next;
-}
+};
 
-*top = NULL;                                 
+struct Node *top = NULL;                                 
 
 void push(int value)
 {
